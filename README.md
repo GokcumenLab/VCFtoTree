@@ -3,7 +3,7 @@ Updates:
 - It can now be applied to other species besides human.
 - In human section, you can also add in your customized vcf files, and you can specify the number of individuals in your vcf file.
 - Users can choose whether to build the tree or not, also to build the tree using either [FastTree] or RAxML. (To note that, VCFtoTree v3.0.0 compiles the FastTree with ```-DUSE_DOUBLE``` by default, lifting the hard-coded limit on branch length precision. Please see detail in this [blog].)
-- <p style='color:red'>Vindija Neanderthal can't be used </p> in this version right now due to the fact that the data haven't been published. It will be updated once it is published.
+- <font color="#f03c15">Vindija Neanderthal can't be used </font> in this version right now due to the fact that the data haven't been published. It will be updated once it is published.
 
 - To use the functioal of "other species" and "customized human", if your customized vcf file or reference are from a local address, please enter the full address of the file.
 - For customized vcf file and reference file, please use the compressed version of them as in "***.fa.gz" or "***.vcf.gz", the program will index them for you.
