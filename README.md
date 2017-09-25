@@ -16,7 +16,7 @@ Updates:
 #### APP download site:
 https://www.dropbox.com/sh/sewjxmh9207fp89/AAASfUGqMBtd2_HO3CR7XA3ha?dl=0
 
-INSTALLATIONS AND INSTRUCTIONS ARE UNDER V1.0.0
+**INSTALLATIONS AND INSTRUCTIONS ARE UNDER V1.0.0**
 
 # VCFtoTree v2.0.0
 Updates:
