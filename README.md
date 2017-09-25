@@ -52,7 +52,7 @@ Here are the programs/packages needed to run the VCFtoTree.
 - [samtools] needs to be installed in your /usr/local/bin
 - [tabix] needs to be installed in your /usr/local/bin
 - [wget] needs to be installed in your /usr/local/bin
-- [gcc] needs to be installed in your /usr/local/bin
+- [gcc] needs to be installed in your /usr/bin
 
 [samtools]:http://www.htslib.org
 [tabix]:https://github.com/samtools/tabix
