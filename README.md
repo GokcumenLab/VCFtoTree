@@ -52,11 +52,13 @@ Here are the programs/packages needed to run the VCFtoTree.
 - [samtools] needs to be installed in your /usr/local/bin
 - [tabix] needs to be installed in your /usr/local/bin
 - [wget] needs to be installed in your /usr/local/bin
+- [gcc] needs to be installed
 
 [samtools]:http://www.htslib.org
 [tabix]:https://github.com/samtools/tabix
 [wget]:https://developer.apple.com/opensource/
 [command line tools]:https://developer.apple.com/opensource/
+[gcc]:https://gcc.gnu.org/
 
 The easiest way to check if you have those three tools, type the commands below into your Terminal:
 
@@ -66,6 +68,8 @@ find /usr/local/bin/tabix
 find /usr/local/bin/samtools
 
 find /usr/local/bin/wget
+
+gcc --version
 ```
 After making sure that you have the above three tools installed, you can download and use the app now.
 
