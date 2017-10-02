@@ -17,6 +17,7 @@ Updates:
 https://www.dropbox.com/sh/sewjxmh9207fp89/AAASfUGqMBtd2_HO3CR7XA3ha?dl=0
 
 **INSTALLATIONS AND INSTRUCTIONS ARE UNDER V1.0.0**
+**PLEASE MAKE SURE YOU INSTALLED ALL THE NECESSARY TOOLS AS DESCRIBED BEFORE USING THE VCFTOTREE**
 
 # VCFtoTree v2.0.0
 Updates:
@@ -49,7 +50,7 @@ VCFtoTree was designed for Mac OS users, has been tested on El Captian V10.11.5 
 
 Here are the programs/packages needed to run the VCFtoTree.
 - For first time users, you need to make sure your Mac has install the [command line tools] from Apple.com
-- [samtools] needs to be installed in your /usr/local/bin
+- [samtools] executable file needs to be installed in your /usr/local/bin
 - [tabix] needs to be installed in your /usr/local/bin
 - [wget] needs to be installed in your /usr/local/bin
 - [gcc] needs to be installed in your /usr/bin
