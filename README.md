@@ -66,7 +66,7 @@ Here are the programs/packages needed to run the VCFtoTree.
 [command line tools]:https://developer.apple.com/opensource/
 [gcc]:https://gcc.gnu.org/
 
-The easiest way to check if you have those three tools, type the commands below into your Terminal:
+The easiest way to check if you have those tools, type the commands below into your Terminal:
 
 ```unix
 find /usr/local/bin/tabix
@@ -81,7 +81,9 @@ After making sure that you have the above three tools installed, you can downloa
 
 The running time of the app mostly depends on 1) downloading the Neanderthal vcf file; 2) building the phylogeny using RAxML.
 
-After the whole process finishing, the app will generate a **VCFtoTree_Output** folder right next to your application in which you can find the newick tree file and all other output files. (The folder will be empty before the app finishes)
+After the whole process finishing, the app will generate a **VCFtoTree_Output** folder right next to your application in which you can find the newick tree file and all other output files.
+
+**The folder will be empty before the app finishes, after the app finished, the folder will be open automatically, you will be able to see all the files generated. After each run, please change the previous output folder name to something else to avoid overwrite.**
 
 On the screen there will also be message saying that "Your tree is completed."
 
