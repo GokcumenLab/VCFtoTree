@@ -81,7 +81,7 @@ The running time of the app mostly depends on 1) downloading the Neanderthal vcf
 
 After the whole process finishing, the app will generate a **VCFtoTree_Output** folder right next to your application in which you can find the newick tree file and all other output files.
 
-**The folder will be empty before the app finishes, after the app finished, the folder will be open automatically, you will be able to see all the files generated. After each run, please change the previous output folder name to something else to avoid overwrite.**
+**The folder will be empty before the app finishes. After the app finishing, the folder will be open automatically, you will be able to see all the files generated. After each run, please change the previous output folder name to something else to avoid overwrite.**
 
 On the screen there will also be message saying that "Your tree is completed."
 
