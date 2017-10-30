@@ -1,4 +1,4 @@
-**PLEASE SEE THE MANUAL PDF ```VCFtoTreeManual_V3.0.0_Oct.pdf``` IN THIS FOLDER FOR DETIALED INSTRUCTIONS!!!   -- Credited to Izzy Starr**
+**PLEASE SEE THE MANUAL PDF ```VCFtoTreeManual_V3.0.0_Oct.pdf``` IN THIS FOLDER FOR DETAILED INSTRUCTIONS!!!   -- Credited to Izzy Starr**
 
 
 
