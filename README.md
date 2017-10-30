@@ -1,6 +1,8 @@
-**INSTALLATIONS AND INSTRUCTIONS ARE UNDER V1.0.0, PLEASE READ THEM VERY VERY CAREFULLY !!!**
+**PLEASE SEE THE MANUAL PDF IN THIS FOLDER FOR DETIALED INSTRUCTIONS!!! Credited to Izzy Starr**
 
-**PLEASE MAKE SURE YOU HAVE INSTALLED ALL THE NECESSARY TOOLS AS DESCRIBED BEFORE USING THE VCFTOTREE !!!**
+**Brief installations and instructions are under V1.0.0**
+
+**Please make sure you have installed all the necessary tools as described before using the VCFtoTree.**
 
 # VCFtoTree v3.0.0
 Updates:
