@@ -1,4 +1,7 @@
-**PLEASE SEE THE MANUAL PDF IN THIS FOLDER FOR DETIALED INSTRUCTIONS!!! Credited to Izzy Starr**
+**PLEASE SEE THE MANUAL PDF IN THIS FOLDER FOR DETIALED INSTRUCTIONS!!!   -- Credited to Izzy Starr**
+
+
+
 
 **Brief installations and instructions are under V1.0.0**
 
