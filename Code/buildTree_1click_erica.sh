@@ -159,8 +159,10 @@ else
     if [[ $specieslist == *"Vindija"* ]]
     then
         ## prepare Vindija vcf file
-        /usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
-        /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
+	## not gonna work until published.
+        ##DO NOT USE!!!##/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
+        touch chr$chr\_mq25_mapab100.vcf.gz
+	/usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
         /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
         vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
