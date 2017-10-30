@@ -3,7 +3,7 @@
 
 
 
-**Brief installations and instructions are under V1.0.0**
+**Brief installations and instructions are under V1.0.0 (please scroll down)**
 
 **Please make sure you have installed all the necessary tools as described before using the VCFtoTree.**
 
