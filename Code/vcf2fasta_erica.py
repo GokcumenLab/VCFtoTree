@@ -346,10 +346,17 @@ while n <= 2504:  # phase3 2504, phase1 1092
     haplotype2 = []
     dic_psn1_sorted = collections.OrderedDict(sorted(dic_psn1.items()))
     dic_psn2_sorted = collections.OrderedDict(sorted(dic_psn2.items()))
-    for p in dic_psn1_sorted:
-        haplotype1.append(dic_psn1_sorted[p])
-    for q in dic_psn2_sorted:
-        haplotype2.append(dic_psn2_sorted[q])
+
+    locList = []
+    for eachLoc in dic_psn2.keys():
+        locList.append(int(eachLoc))
+
+    locList = sorted(locList)
+
+    for p in locList:
+        haplotype1.append(dic_psn1_sorted[str(p)+'_1'])
+    for q in locList:
+        haplotype2.append(dic_psn2_sorted[str(q)])
     all_haplo[id[n + 8] + '.1'] = ''.join(haplotype1)
     all_haplo[id[n + 8] + '.2'] = ''.join(haplotype2)
     n += 1
