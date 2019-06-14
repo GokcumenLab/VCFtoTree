@@ -27,7 +27,6 @@ raxML=$8
 fastTree=$9
 
 
-
 echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s). Have fun!"
 echo $populationlist
 echo $specieslist
@@ -56,212 +55,203 @@ ref=REF_chr$chr.START$start.END$end.fa
 ## prepare 1000 genome vcf file
 if [[ $specieslist == *'Human-1000Genomes'* ]]
 then
-    /usr/local/bin/tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
-    vcffile=chr$chr.START$start.END$end.vcf
+  /usr/local/bin/tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
+  vcffile=chr$chr.START$start.END$end.vcf
 
-    python Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
-    wait
-    echo "vcftofasta has run."
+  python Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
+  wait
+  echo "vcftofasta has run."
 fi
 
 
 ##If array only contains human
 if [ $specieslist -eq 'Human-1000Genomes' ]
 then
-	## Tree building
+  ## Tree building
 
-    ## If use FastTree
-    ## If the user need to compile it:
-    if [ $fastTree -eq 1 ]
-    then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o FastTree FastTree.c -lm
-        chmod +x Code/FastTree
-        Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
-        wait
-    fi
+  ## If use FastTree
+  ## If the user need to compile it:
+  if [ $fastTree -eq 1 ]
+  then
+    gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o FastTree FastTree.c -lm
+    chmod +x Code/FastTree
+    Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
+    wait
+  fi
 
-    if [ $raxML -eq 1 ]
-    then
-        ## If use RAxML
-        python Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
-        chmod +x Code/raxmlHPC-PTHREADS-SSE3
-        Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
-        wait
-        mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
-        wait
-    fi
+  if [ $raxML -eq 1 ]
+  then
+    ## If use RAxML
+    python Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
+    chmod +x Code/raxmlHPC-PTHREADS-SSE3
+    Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+    wait
+    mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
+    wait
+  fi
 
-	#shopt -s extglob
-	#shopt -p extglob
-	mkdir ../temp
-	mv Code ../temp
-	mv vcftotree_gui_final.py ../temp
-	mv README.md ../temp
+  #shopt -s extglob
+  #shopt -p extglob
+  mkdir ../temp
+  mv Code ../temp
+  mv vcftotree_gui_final.py ../temp
+  mv README.md ../temp
 
-	mv * ../../../VCFtoTree_Output/
+  mv * ../../../VCFtoTree_Output/
 
-	mv ../temp/* .
-	rmdir ../temp
+  mv ../temp/* .
+  rmdir ../temp
 
 
-    #mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
-	open ../../../VCFtoTree_Output/
+  #mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
+  open ../../../VCFtoTree_Output/
 
-##Else if other species selected
 else
-	touch ALI_altainean.fa
-	touch ALI_vindijanean.fa
-	touch ALI_den.fa
-	touch ALI_panTro4Ref_hg19.fa
-	touch ALI_rheMac3Ref_hg19.fa
-	touch ALI_customized_human.fa
-	
+  ##Else if other species selected
+  touch ALI_altainean.fa
+  touch ALI_vindijanean.fa
+  touch ALI_den.fa
+  touch ALI_panTro4Ref_hg19.fa
+  touch ALI_rheMac3Ref_hg19.fa
+  touch ALI_customized_human.fa
 
-    ##If array contains human-customized
-    if [[ $specieslist == *'Human-Custom'* ]]
+
+  ##If array contains human-customized
+  if [[ $specieslist == *'Human-Custom'* ]]
+  then
+    if [[ $vcfaddress == *"http://"* ]]
     then
-        if [[ $vcfaddress == *"http://"* ]]
-        then
-            /usr/local/bin/wget $vcfaddress
-            filenameVcfGz=$(basename "$vcfaddress")
-            mv $filenameVcfGz customized_human_chr$chr.vcf.gz
-        else
-            mv $vcfaddress customized_human_chr$chr.vcf.gz
-        fi
-
-        /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz
-        /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
-
-        customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
-
-        python Code/
-        ## building the alignment
-        python Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
-        wait
-        echo "vcftofasta for customized human has run."
+      /usr/local/bin/wget $vcfaddress
+      filenameVcfGz=$(basename "$vcfaddress")
+      mv $filenameVcfGz customized_human_chr$chr.vcf.gz
+    else
+      mv $vcfaddress customized_human_chr$chr.vcf.gz
     fi
 
+    /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz
+    /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
 
-    ##If neadertal in array
-	if [[ $specieslist == *"Neanderthal"* ]]
-	then
-		## prepare Altai neanderthal vcf files
-		/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
-		
-		vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
-		
-		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
-	fi	
+    customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
 
-    ##If Vindija neanderthal in array
-    if [[ $specieslist == *"Vindija"* ]]
-    then
-        ## prepare Vindija vcf file
-	## not gonna work until published.
-        ##DO NOT USE!!!##/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
-        touch chr$chr\_mq25_mapab100.vcf.gz
-	/usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
-        /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
-
-        vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
-
-        python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
-    fi
+    python Code/
+    ## building the alignment
+    python Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
+    wait
+    echo "vcftofasta for customized human has run."
+  fi
 
 
-    ##If denisova in array
-	if [[ $specieslist == *"Denisova"* ]] 
-	then
-		## prepare Denisovan vcf files
-		/usr/local/bin/tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
+  ##If neadertal in array
+  if [[ $specieslist == *"Neanderthal"* ]]
+  then
+    ## prepare Altai neanderthal vcf files
+    /usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+    /usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+    /usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
 
-		vcffile_den=Den_chr$chr.START$start.END$end.vcf
-		
-		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
-	fi
+    vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
 
-    ##If chimp in array
-	if [[ $specieslist == *"Chimp"* ]]
-	then
-		# getting Chimpanzee(panTro4) reference, mapped to hg19
-		/usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsPanTro4/axtNet/chr$chr.hg19.panTro4.net.axt.gz
-		gunzip -c chr$chr.hg19.panTro4.net.axt.gz > chr$chr.hg19.panTro4.net.axt
-		python Code/Map_panTro4Ref2hg19.py chr$chr.hg19.panTro4.net.axt $chr $start $end ALI_panTro4Ref_hg19.fa
-	fi
+    python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
+  fi
 
-    ##If RM in array
-	if [[ $specieslist == *"Rhesus-macaque"* ]]
-	then
-		# getting Rhesus(RheMac3) reference, mapped to hg19
-		/usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsRheMac3/axtNet/chr$chr.hg19.rheMac3.net.axt.gz
-		gunzip -c chr$chr.hg19.rheMac3.net.axt.gz > chr$chr.hg19.rheMac3.net.axt
-		python Code/Map_rheMac3Ref2hg19.py chr$chr.hg19.rheMac3.net.axt $chr $start $end ALI_rheMac3Ref_hg19.fa
-	fi
+  ##If Vindija neanderthal in array
+  if [[ $specieslist == *"Vindija"* ]]
+  then
+    ## prepare Vindija vcf file
+    ## not gonna work until published.
+    ##DO NOT USE!!!##/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
+    touch chr$chr\_mq25_mapab100.vcf.gz
+    /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
+    /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
+    vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
 
-	##May cause error if not found
-	# add gaps from log.txt
-	cat ALI_customized_human.fa ALI_altainean.fa ALI_vindijanean.fa ALI_den.fa ALI_panTro4Ref_hg19.fa ALI_rheMac3Ref_hg19.fa >> ALI_temp.fa
-	#rm ALI_altainean.fa
-	#rm ALI_vindijanean.fa
-	#rm ALI_den.fa
-	#rm ALI_panTro4Ref_hg19.fa
-	#rm ALI_rheMac3Ref_hg19.fa
-	python Code/add_gap.py ALI_temp.fa log.txt $start $end ALI_othergenomes_wgap.fa
-
-	cat ALI_othergenomes_wgap.fa ALI_1000HG.fa >> ALI_final.fa
-	rm ALI_temp.fa
+    python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
+  fi
 
 
-    ## If use FastTree
-    ## If the user need to compile it:
-    if [ $fastTree -eq 1 ]
-    then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o Code/FastTree Code/FastTree.c -lm
-        chmod +x Code/FastTree
-        Code/FastTree -gtr -gamma -nt ALI_final.fa > FastTree_ALI_final.newick &
-        wait
-    fi
+  ##If denisova in array
+  if [[ $specieslist == *"Denisova"* ]]
+  then
+    ## prepare Denisovan vcf files
+    /usr/local/bin/tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
 
-    if [ $raxML -eq 1 ]
-    then
-        ## If use RAxML
-        rm ALI_final.phy
-        python Code/fas2phy.py ALI_final.fa ALI_final.phy
-        chmod +x Code/raxmlHPC-PTHREADS-SSE3
-        Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
-        wait
-        mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
-        wait
-    fi
+    vcffile_den=Den_chr$chr.START$start.END$end.vcf
+
+    python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
+  fi
+
+  ##If chimp in array
+  if [[ $specieslist == *"Chimp"* ]]
+  then
+    # getting Chimpanzee(panTro4) reference, mapped to hg19
+    /usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsPanTro4/axtNet/chr$chr.hg19.panTro4.net.axt.gz
+    gunzip -c chr$chr.hg19.panTro4.net.axt.gz > chr$chr.hg19.panTro4.net.axt
+    python Code/Map_panTro4Ref2hg19.py chr$chr.hg19.panTro4.net.axt $chr $start $end ALI_panTro4Ref_hg19.fa
+  fi
+
+  ##If RM in array
+  if [[ $specieslist == *"Rhesus-macaque"* ]]
+  then
+    # getting Rhesus(RheMac3) reference, mapped to hg19
+    /usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsRheMac3/axtNet/chr$chr.hg19.rheMac3.net.axt.gz
+    gunzip -c chr$chr.hg19.rheMac3.net.axt.gz > chr$chr.hg19.rheMac3.net.axt
+    python Code/Map_rheMac3Ref2hg19.py chr$chr.hg19.rheMac3.net.axt $chr $start $end ALI_rheMac3Ref_hg19.fa
+  fi
 
 
-	#shopt -s extglob
-	#shopt -p extglob
-	#mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
+  ##May cause error if not found
+  # add gaps from log.txt
+  cat ALI_customized_human.fa ALI_altainean.fa ALI_vindijanean.fa ALI_den.fa ALI_panTro4Ref_hg19.fa ALI_rheMac3Ref_hg19.fa >> ALI_temp.fa
+  #rm ALI_altainean.fa
+  #rm ALI_vindijanean.fa
+  #rm ALI_den.fa
+  #rm ALI_panTro4Ref_hg19.fa
+  #rm ALI_rheMac3Ref_hg19.fa
+  python Code/add_gap.py ALI_temp.fa log.txt $start $end ALI_othergenomes_wgap.fa
 
-	mkdir ../temp
-	mv Code ../temp
-	mv vcftotree_gui_final.py ../temp
-	mv README.md ../temp
+  cat ALI_othergenomes_wgap.fa ALI_1000HG.fa >> ALI_final.fa
+  rm ALI_temp.fa
 
-	mv * ../../../VCFtoTree_Output/
 
-	mv ../temp/* .
-	rmdir ../temp
-	open ../../../VCFtoTree_Output/
+  ## If use FastTree
+  ## If the user need to compile it:
+  if [ $fastTree -eq 1 ]
+  then
+    gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o Code/FastTree Code/FastTree.c -lm
+    chmod +x Code/FastTree
+    Code/FastTree -gtr -gamma -nt ALI_final.fa > FastTree_ALI_final.newick &
+    wait
+  fi
 
-	echo "All done, Erica is a genius."
+  if [ $raxML -eq 1 ]
+  then
+    ## If use RAxML
+    rm ALI_final.phy
+    python Code/fas2phy.py ALI_final.fa ALI_final.phy
+    chmod +x Code/raxmlHPC-PTHREADS-SSE3
+    Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+    wait
+    mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
+    wait
+  fi
+
+
+  #shopt -s extglob
+  #shopt -p extglob
+  #mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
+
+  mkdir ../temp
+  mv Code ../temp
+  mv vcftotree_gui_final.py ../temp
+  mv README.md ../temp
+
+  mv * ../../../VCFtoTree_Output/
+
+  mv ../temp/* .
+  rmdir ../temp
+  open ../../../VCFtoTree_Output/
+
+  echo "All done, Erica is a genius."
 
 fi
-
-
-
-
-
-
-
-
-
