@@ -1,4 +1,11 @@
-**PLEASE SEE THE MANUAL PDF ```VCFtoTreeManual_V3.0.0_Oct.pdf``` IN THIS FOLDER FOR DETAILED INSTRUCTIONS!!!   -- Credited to Izzy Starr**
+
+Install the requirements
+
+`pip install -r requirements.txt`
+
+Run the applicaiton
+
+`python vcftotree_gui_final.py`
 
 
 
@@ -30,7 +37,7 @@ https://www.dropbox.com/sh/sewjxmh9207fp89/AAASfUGqMBtd2_HO3CR7XA3ha?dl=0
 # VCFtoTree v2.0.0
 Updates:
 - Now users can choose the populations that they are interested, or "ALL" to include all the populations.
-- Added the new Neanderthal [Vindija] to the GUI. 
+- Added the new Neanderthal [Vindija] to the GUI.
 
 [Vindija]:http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/
 
@@ -99,5 +106,3 @@ https://www.dropbox.com/sh/sewjxmh9207fp89/AAASfUGqMBtd2_HO3CR7XA3ha?dl=0
 
 #### 1.0.0
 The first working version of VCFtoTree.app.
-
-

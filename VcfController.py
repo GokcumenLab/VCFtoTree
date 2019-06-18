@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 """
 Controller Class
 """
@@ -14,11 +16,11 @@ class VcfController:
     def __init__(self):
         pass
 
-    def downloadAndIndexRefSeq(self, type, chr, start, end):
+    def run(self, type, chr, start, end, popList):
         genome = Human1K()
-        genome.run(chr, start, end)
+        genome.run(chr, start, end, popList)
 
 
 if __name__ == "__main__":
     vcf = VcfController()
-    vcf.downloadAndIndexRefSeq('', 1, 10, 11)
+    vcf.run('', "chr1", 1, 2, ['ALL'])
