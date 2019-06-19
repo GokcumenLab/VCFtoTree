@@ -31,7 +31,8 @@ start = int(sys.argv[3])
 end = int(sys.argv[4])
 pop_list = str(sys.argv[5])
 output = open(sys.argv[6], 'w')
-error = open(sys.argv[7], 'w')  # output structural variation (VT=SV) as ERROR message.
+# output structural variation (VT=SV) as ERROR message.
+error = open(sys.argv[7], 'w')
 
 haplo = {}
 freq = {}
@@ -67,7 +68,8 @@ for line in input:
         continue
     elif line.startswith('#C'):
         id = []
-        id = line.split('\t')  # id[9] - id[2062] are the individual id (PHASE3); id[9] - id[1100] phase1
+        # id[9] - id[2062] are the individual id (PHASE3); id[9] - id[1100] phase1
+        id = line.split('\t')
         continue
     input_temp.append(line)
 
@@ -128,7 +130,8 @@ while input_cnt <= len(input_temp) - 1:
             elif y == 'VT=INDEL':
                 gt_pre[7] = gt_pre[7].replace('VT=INDEL', 'VT=SNP,INDEL')
             elif y == 'VT=SNP,INDEL':
-                gt_pre[7] = gt_pre[7]  # .replace('VT=INDEL,INDEL', 'VT=SNP,INDEL')
+                # .replace('VT=INDEL,INDEL', 'VT=SNP,INDEL')
+                gt_pre[7] = gt_pre[7]
 
         input_temp[input_cnt - 1] = '\t'.join(gt_pre)
         input_temp.remove(input_temp[input_cnt])
@@ -167,17 +170,20 @@ for l in input_temp:
                     alter0 = gt0[4].split(',')
                     num_alter = len(alter0)
                     if num_alter == 2:
-                        max_len = max(len(gt0[3]), len(alter0[0]), len(alter0[1]))
+                        max_len = max(len(gt0[3]), len(
+                            alter0[0]), len(alter0[1]))
                         delta_0 = max_len - len(gt0[3])
                         delta_1 = max_len - len(alter0[0])
                         delta_2 = max_len - len(alter0[1])
                         gt0[3] = gt0[3] + delta_0 * '-'
-                        gt0[4] = alter0[0] + delta_1 * '-' + ',' + alter0[1] + delta_2 * '-'
+                        gt0[4] = alter0[0] + delta_1 * '-' + \
+                            ',' + alter0[1] + delta_2 * '-'
                         l = '\t'.join(gt0)
                         input2.append(l)
                         error.write(l + '\n')
                     elif num_alter == 3:
-                        max_len = max(len(gt0[3]), len(alter0[0]), len(alter0[1]), len(alter0[2]))
+                        max_len = max(len(gt0[3]), len(
+                            alter0[0]), len(alter0[1]), len(alter0[2]))
                         delta_0 = max_len - len(gt0[3])
                         delta_1 = max_len - len(alter0[0])
                         delta_2 = max_len - len(alter0[1])
@@ -194,7 +200,8 @@ for l in input_temp:
 
             elif vt == 'VT=INDEL':
                 if not any(',' in gt0[4] for c0 in gt0[4]):
-                    delta = len(gt0[3]) - len(gt0[4])  # gt[3] is REF, gt[4] is ALT
+                    # gt[3] is REF, gt[4] is ALT
+                    delta = len(gt0[3]) - len(gt0[4])
                     if delta > 0:
                         gt0[4] = gt0[4] + delta * '-'
                         l = '\t'.join(gt0)
@@ -209,14 +216,17 @@ for l in input_temp:
                     alter0 = gt0[4].split(',')
                     indel_cnt = len(alter0)
                     if indel_cnt == 2:
-                        max_len = max(len(gt0[3]), len(alter0[0]), len(alter0[1]))
+                        max_len = max(len(gt0[3]), len(
+                            alter0[0]), len(alter0[1]))
                         delta_0 = max_len - len(gt0[3])
                         delta_1 = max_len - len(alter0[0])
                         delta_2 = max_len - len(alter0[1])
                         gt0[3] = gt0[3] + delta_0 * '-'
-                        gt0[4] = alter0[0] + delta_1 * '-' + ',' + alter0[1] + delta_2 * '-'
+                        gt0[4] = alter0[0] + delta_1 * '-' + \
+                            ',' + alter0[1] + delta_2 * '-'
                     elif indel_cnt == 3:
-                        max_len = max(len(gt0[3]), len(alter0[0]), len(alter0[1]), len(alter0[2]))
+                        max_len = max(len(gt0[3]), len(
+                            alter0[0]), len(alter0[1]), len(alter0[2]))
                         delta_0 = max_len - len(gt0[3])
                         delta_1 = max_len - len(alter0[0])
                         delta_2 = max_len - len(alter0[1])
@@ -225,7 +235,8 @@ for l in input_temp:
                         gt0[4] = alter0[0] + delta_1 * '-' + ',' + alter0[1] + delta_2 * '-' + ',' + alter0[
                             2] + delta_3 * '-'
                     elif indel_cnt == 4:
-                        max_len = max(len(gt0[3]), len(alter0[0]), len(alter0[1]), len(alter0[2]), len(alter0[3]))
+                        max_len = max(len(gt0[3]), len(alter0[0]), len(
+                            alter0[1]), len(alter0[2]), len(alter0[3]))
                         delta_0 = max_len - len(gt0[3])
                         delta_1 = max_len - len(alter0[0])
                         delta_2 = max_len - len(alter0[1])
@@ -354,14 +365,14 @@ while n <= 2504:  # phase3 2504, phase1 1092
     locList = sorted(locList)
 
     for p in locList:
-        haplotype1.append(dic_psn1_sorted[str(p)+'_1'])
+        haplotype1.append(dic_psn1_sorted[str(p) + '_1'])
     for q in locList:
         haplotype2.append(dic_psn2_sorted[str(q)])
     all_haplo[id[n + 8] + '.1'] = ''.join(haplotype1)
     all_haplo[id[n + 8] + '.2'] = ''.join(haplotype2)
     n += 1
 
-## Only output selected populations
+# Only output selected populations
 pop_dic = {'acb': ['HG01879', 'HG01880', 'HG01881', 'HG01882', 'HG01883', 'HG01884', 'HG01885', 'HG01886', 'HG01887',
                    'HG01888', 'HG01889', 'HG01890', 'HG01891', 'HG01894', 'HG01895', 'HG01896', 'HG01897', 'HG01912',
                    'HG01914', 'HG01915', 'HG01916', 'HG01956', 'HG01958', 'HG01959', 'HG01960', 'HG01985', 'HG01986',
@@ -743,7 +754,7 @@ pop_dic = {'acb': ['HG01879', 'HG01880', 'HG01881', 'HG01882', 'HG01883', 'HG018
                    'HG03663', 'HG03667', 'HG03668', 'HG03669', 'HG03699', 'HG03700', 'HG03701', 'HG03702', 'HG03703',
                    'HG03704', 'HG03705', 'HG03706', 'HG03707', 'HG03708', 'HG03709', 'HG03710', 'HG03761', 'HG03762',
                    'HG03763', 'HG03765', 'HG03766', 'HG03767', 'HG03769'],
-           'ibs': ['HG01500','HG01501','HG01502','HG01503','HG01504','HG01505','HG01506','HG01507','HG01508','HG01509','HG01510','HG01511','HG01512','HG01513','HG01514','HG01515','HG01516','HG01517','HG01518','HG01519','HG01520','HG01521','HG01522','HG01523','HG01524','HG01525','HG01526','HG01527','HG01528','HG01529','HG01530','HG01531','HG01532','HG01536','HG01537','HG01538','HG01601','HG01602','HG01603','HG01604','HG01605','HG01606','HG01607','HG01608','HG01609','HG01610','HG01611','HG01612','HG01613','HG01614','HG01615','HG01616','HG01617','HG01618','HG01619','HG01620','HG01621','HG01622','HG01623','HG01624','HG01625','HG01626','HG01627','HG01628','HG01629','HG01630','HG01631','HG01632','HG01633','HG01667','HG01668','HG01669','HG01670','HG01671','HG01672','HG01673','HG01674','HG01675','HG01676','HG01677','HG01678','HG01679','HG01680','HG01681','HG01682','HG01683','HG01684','HG01685','HG01686','HG01687','HG01694','HG01695','HG01696','HG01697','HG01698','HG01699','HG01700','HG01701','HG01702','HG01703','HG01704','HG01705','HG01706','HG01707','HG01708','HG01709','HG01710','HG01711','HG01746','HG01747','HG01748','HG01755','HG01756','HG01757','HG01761','HG01762','HG01763','HG01764','HG01765','HG01766','HG01767','HG01768','HG01769','HG01770','HG01771','HG01772','HG01773','HG01774','HG01775','HG01776','HG01777','HG01778','HG01779','HG01780','HG01781','HG01782','HG01783','HG01784','HG01785','HG01786','HG01787','HG02217','HG02218','HG02219','HG02220','HG02221','HG02222','HG02223','HG02224','HG02225','HG02229','HG02230','HG02231','HG02232','HG02233','HG02234','HG02235','HG02236','HG02237','HG02238','HG02239','HG02240']
+           'ibs': ['HG01500', 'HG01501', 'HG01502', 'HG01503', 'HG01504', 'HG01505', 'HG01506', 'HG01507', 'HG01508', 'HG01509', 'HG01510', 'HG01511', 'HG01512', 'HG01513', 'HG01514', 'HG01515', 'HG01516', 'HG01517', 'HG01518', 'HG01519', 'HG01520', 'HG01521', 'HG01522', 'HG01523', 'HG01524', 'HG01525', 'HG01526', 'HG01527', 'HG01528', 'HG01529', 'HG01530', 'HG01531', 'HG01532', 'HG01536', 'HG01537', 'HG01538', 'HG01601', 'HG01602', 'HG01603', 'HG01604', 'HG01605', 'HG01606', 'HG01607', 'HG01608', 'HG01609', 'HG01610', 'HG01611', 'HG01612', 'HG01613', 'HG01614', 'HG01615', 'HG01616', 'HG01617', 'HG01618', 'HG01619', 'HG01620', 'HG01621', 'HG01622', 'HG01623', 'HG01624', 'HG01625', 'HG01626', 'HG01627', 'HG01628', 'HG01629', 'HG01630', 'HG01631', 'HG01632', 'HG01633', 'HG01667', 'HG01668', 'HG01669', 'HG01670', 'HG01671', 'HG01672', 'HG01673', 'HG01674', 'HG01675', 'HG01676', 'HG01677', 'HG01678', 'HG01679', 'HG01680', 'HG01681', 'HG01682', 'HG01683', 'HG01684', 'HG01685', 'HG01686', 'HG01687', 'HG01694', 'HG01695', 'HG01696', 'HG01697', 'HG01698', 'HG01699', 'HG01700', 'HG01701', 'HG01702', 'HG01703', 'HG01704', 'HG01705', 'HG01706', 'HG01707', 'HG01708', 'HG01709', 'HG01710', 'HG01711', 'HG01746', 'HG01747', 'HG01748', 'HG01755', 'HG01756', 'HG01757', 'HG01761', 'HG01762', 'HG01763', 'HG01764', 'HG01765', 'HG01766', 'HG01767', 'HG01768', 'HG01769', 'HG01770', 'HG01771', 'HG01772', 'HG01773', 'HG01774', 'HG01775', 'HG01776', 'HG01777', 'HG01778', 'HG01779', 'HG01780', 'HG01781', 'HG01782', 'HG01783', 'HG01784', 'HG01785', 'HG01786', 'HG01787', 'HG02217', 'HG02218', 'HG02219', 'HG02220', 'HG02221', 'HG02222', 'HG02223', 'HG02224', 'HG02225', 'HG02229', 'HG02230', 'HG02231', 'HG02232', 'HG02233', 'HG02234', 'HG02235', 'HG02236', 'HG02237', 'HG02238', 'HG02239', 'HG02240']
            }
 
 pops = pop_list.split(',')
@@ -760,11 +771,11 @@ for each_pop in pops:
                 final_ind_set.append(x_each_pop)
 
 
-#print final_ind_set
+# print final_ind_set
 
 for j in sorted(all_haplo):  # another easier way to sorted a dictionary by key, only contain key
     if j[:7] in final_ind_set:
-        #print j[:7]
+        # print j[:7]
         output.write('>' + j + '\n')
         output.write(all_haplo[j] + '\n')
 

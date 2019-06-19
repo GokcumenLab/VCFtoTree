@@ -114,6 +114,9 @@ class Utils(object):
             return False
 
     @staticmethod
-    def runCommand(cmd):
-        print('\n Running console command {}'.format(cmd))
-        subprocess.call(cmd)
+    def runCommand(*popenargs):
+        print('\n Running console command {}'.format(popenargs))
+        try:
+            subprocess.call(popenargs, shell=True)
+        except subprocess.CalledProcessError as e:
+            print e.output

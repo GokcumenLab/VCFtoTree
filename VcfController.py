@@ -23,4 +23,4 @@ class VcfController:
 
 if __name__ == "__main__":
     vcf = VcfController()
-    vcf.run('', "chr1", 1, 2, ['ALL'])
+    vcf.run('', "chr1", 1, 2, ['ACB'])

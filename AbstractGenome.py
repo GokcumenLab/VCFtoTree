@@ -5,6 +5,7 @@ Define the skeleton of genome operations
 """
 
 import abc
+import os
 
 from GenomeUtils import GenomeUtils, Utils
 from GenomeConfig import GenomeConfig
@@ -88,7 +89,8 @@ class Human1K(AbstractGenome):
     # default constructor
     def __init__(self):
         self.type = config.GENOME_HUMAN_1K
-        self.fastArrayOutputFile = "ALI_1000HG.fa"
+        self.fastArrayOutputFile = os.path.join(
+            self.getBaseDir(), "ALI_1000HG.fa")
 
     def _downloadRefSequence(self, chromosome):
         url = self.getSequenceUrl(chromosome)
@@ -112,16 +114,29 @@ class Human1K(AbstractGenome):
         filename = self.getVcfFileName(chromosome)
         Utils.downloadRemoteFile(vcfFileUrl, dir, filename)
 
-    def _indexVcf(self, populationlist, chromosome, start, end):
-        dir = self.getBaseDir()
-        filename = dir + self.getVcfFileName(chromosome)
+    def _indexVcf(self, chromosome, start, end):
+        filepath = os.path.join(
+            self.getBaseDir(), self.getVcfFileName(chromosome))
         region = str(chromosome) + ':' + str(start) + '-' + str(end)
-        self.vcfOutputFile = region + '.vcf'
-        tabixCmd = 'tabix -h ' + filename + ' ' + region + ' > ' + self.vcfOutputFile
+        outputFilename = str(chromosome) + '_start_' + \
+            str(start) + '_end' + str(end)
+        self.vcfOutputFile = os.path.join(
+            self.getBaseDir(), outputFilename + '.vcf')
+        if not Utils.isFileExists(filepath + '.tbi'):
+            tabixIndexCmd = 'tabix -h ' + filepath
+            Utils.runCommand(tabixIndexCmd)
+        else:
+            print('\n tbi index file exists skipped indexing {}'.format(filepath))
+
+        tabixCmd = 'tabix -h ' + filepath + ' ' + region + ' > ' + self.vcfOutputFile
         Utils.runCommand(tabixCmd)
 
     def _convertToFastArray(self, chromosome, start, end, popList):
-        cmd = 'python Code/vcf2fasta_erica.py ' + self.vcfOutputFile + ' ' + self.sequence + ' ' + \
-            start + ' ' + end + ' ' + popList + '' + \
-            self.fastArrayOutputFile + ' ' + self.logfile
+        popStr = ','.join(map(str, popList))
+        cmd = 'python Code/vcf2fasta_erica.py ' + self.vcfOutputFile + ' ' + self.filename + ' ' + \
+            str(start) + ' ' + str(end) + ' ' + popStr + ' ' + \
+            self.fastArrayOutputFile + ' ' + os.path.join(
+                self.getBaseDir(), self.logfile)
         Utils.runCommand(cmd)
+        # Utils.runCommand(['python','Code/vcf2fasta_erica.py',self.vcfOutputFile,  self.filename, str(start), str(end), 'ALL', self.fastArrayOutputFile,os.path.join(
+        #     self.getBaseDir(), self.logfile)])
