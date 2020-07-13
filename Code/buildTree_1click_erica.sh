@@ -26,6 +26,8 @@ raxML=$8
 ## Do you want to build the tree using fastTree?
 fastTree=$9
 
+# Load configuration files
+. vtt.config
 
 
 echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s). Have fun!"
@@ -35,7 +37,7 @@ echo $specieslist
 #folderAdd=$(pwd)
 #echo $folderAdd
 
-mkdir ../../../VCFtoTree_Output
+mkdir $conf_dir_output
 
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
@@ -98,14 +100,12 @@ then
 	mv vcftotree_gui_final.py ../temp
 	mv README.md ../temp
 
-	mv * ../../../VCFtoTree_Output/
+	mv * $conf_dir_output/
 
 	mv ../temp/* .
 	rmdir ../temp
 
-
-    #mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
-	open ../../../VCFtoTree_Output/
+	open $conf_dir_output/
 
 ##Else if other species selected
 else
@@ -115,7 +115,7 @@ else
 	touch ALI_panTro4Ref_hg19.fa
 	touch ALI_rheMac3Ref_hg19.fa
 	touch ALI_customized_human.fa
-	
+
 
     ##If array contains human-customized
     if [[ $specieslist == *'Human-Custom'* ]]
@@ -149,11 +149,11 @@ else
 		/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
 		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
 		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
-		
+
 		vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
-		
+
 		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
-	fi	
+	fi
 
     ##If Vindija neanderthal in array
     if [[ $specieslist == *"Vindija"* ]]
@@ -172,13 +172,13 @@ else
 
 
     ##If denisova in array
-	if [[ $specieslist == *"Denisova"* ]] 
+	if [[ $specieslist == *"Denisova"* ]]
 	then
 		## prepare Denisovan vcf files
 		/usr/local/bin/tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
 
 		vcffile_den=Den_chr$chr.START$start.END$end.vcf
-		
+
 		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
 	fi
 
@@ -240,28 +240,18 @@ else
 
 	#shopt -s extglob
 	#shopt -p extglob
-	#mv !(Code|vcftotree_gui_final.py|README.md) ../../../VCFtoTree_Output/
 
 	mkdir ../temp
 	mv Code ../temp
 	mv vcftotree_gui_final.py ../temp
 	mv README.md ../temp
 
-	mv * ../../../VCFtoTree_Output/
+	mv * $conf_dir_output/
 
 	mv ../temp/* .
 	rmdir ../temp
-	open ../../../VCFtoTree_Output/
+	open $conf_dir_output/
 
 	echo "All done, Erica is a genius."
 
 fi
-
-
-
-
-
-
-
-
-
