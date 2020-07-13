@@ -195,8 +195,8 @@ for l in input_temp:
                         input2.append(l)
                         error.write(l + '\n')
                     else:
-                        print alter0
-                        print "Please go to find Erica..."
+                        print (alter0)
+                        print ("Please go to find Erica...")
 
             elif vt == 'VT=INDEL':
                 if not any(',' in gt0[4] for c0 in gt0[4]):
@@ -252,8 +252,8 @@ for l in input_temp:
             elif vt == 'VT=SNP':
                 input2.append(l)
             else:
-                print vt
-                print "Please go to find Erica..."
+                print (vt)
+                print ("Please go to find Erica...")
 error.close()
 
 n = 1
@@ -307,7 +307,7 @@ while n <= 2504:  # phase3 2504, phase1 1092
                 gt1 = gt[4]
                 gt2 = gt[4]
             else:
-                print 'error'
+                print ('error')
 
         # if len(gt1) <= len(dic_psn1[pos+'_1']):
         #    continue
@@ -1046,6 +1046,6 @@ for j in sorted(
 endTime = time.time()
 workTime = endTime - startTime
 
-print 'Time used: {}'.format(str(datetime.timedelta(seconds=workTime)))
-print 'Erica is a genius!'
+print ('Time used: {}'.format(str(datetime.timedelta(seconds=workTime))))
+print ('Erica is a genius!')
 output.close()
