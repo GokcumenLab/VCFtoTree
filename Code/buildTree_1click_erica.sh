@@ -41,10 +41,10 @@ mkdir $conf_dir_output
 
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
-/usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr$chr.fa.gz
+wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr$chr.fa.gz
 gunzip -c chr$chr.fa.gz > chr$chr.fa
-/usr/local/bin/samtools faidx chr$chr.fa
-/usr/local/bin/samtools faidx chr$chr.fa chr$chr:$start-$end > REF_chr$chr.START$start.END$end.fa
+samtools faidx chr$chr.fa
+samtools faidx chr$chr.fa chr$chr:$start-$end > REF_chr$chr.START$start.END$end.fa
 
 ref=REF_chr$chr.START$start.END$end.fa
 
@@ -58,7 +58,7 @@ ref=REF_chr$chr.START$start.END$end.fa
 ## prepare 1000 genome vcf file
 if [[ $specieslist == *'Human-1000Genomes'* ]]
 then
-    /usr/local/bin/tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
+    tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
     vcffile=chr$chr.START$start.END$end.vcf
 
     python Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
@@ -122,15 +122,15 @@ else
     then
         if [[ $vcfaddress == *"http://"* ]]
         then
-            /usr/local/bin/wget $vcfaddress
+            wget $vcfaddress
             filenameVcfGz=$(basename "$vcfaddress")
             mv $filenameVcfGz customized_human_chr$chr.vcf.gz
         else
             mv $vcfaddress customized_human_chr$chr.vcf.gz
         fi
 
-        /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz
-        /usr/local/bin/tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
+        tabix -h -f customized_human_chr$chr.vcf.gz
+        tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
 
         customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
 
@@ -146,9 +146,9 @@ else
 	if [[ $specieslist == *"Neanderthal"* ]]
 	then
 		## prepare Altai neanderthal vcf files
-		/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		/usr/local/bin/tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
+		wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+		tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+		tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
 
 		vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
 
@@ -160,10 +160,10 @@ else
     then
         ## prepare Vindija vcf file
 	## not gonna work until published.
-        ##DO NOT USE!!!##/usr/local/bin/wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
+        ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
         touch chr$chr\_mq25_mapab100.vcf.gz
-	/usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
-        /usr/local/bin/tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
+	tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
+        tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
         vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
 
@@ -175,7 +175,7 @@ else
 	if [[ $specieslist == *"Denisova"* ]]
 	then
 		## prepare Denisovan vcf files
-		/usr/local/bin/tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
+		tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
 
 		vcffile_den=Den_chr$chr.START$start.END$end.vcf
 
@@ -186,7 +186,7 @@ else
 	if [[ $specieslist == *"Chimp"* ]]
 	then
 		# getting Chimpanzee(panTro4) reference, mapped to hg19
-		/usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsPanTro4/axtNet/chr$chr.hg19.panTro4.net.axt.gz
+		wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsPanTro4/axtNet/chr$chr.hg19.panTro4.net.axt.gz
 		gunzip -c chr$chr.hg19.panTro4.net.axt.gz > chr$chr.hg19.panTro4.net.axt
 		python Code/Map_panTro4Ref2hg19.py chr$chr.hg19.panTro4.net.axt $chr $start $end ALI_panTro4Ref_hg19.fa
 	fi
@@ -195,7 +195,7 @@ else
 	if [[ $specieslist == *"Rhesus-macaque"* ]]
 	then
 		# getting Rhesus(RheMac3) reference, mapped to hg19
-		/usr/local/bin/wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsRheMac3/axtNet/chr$chr.hg19.rheMac3.net.axt.gz
+		wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsRheMac3/axtNet/chr$chr.hg19.rheMac3.net.axt.gz
 		gunzip -c chr$chr.hg19.rheMac3.net.axt.gz > chr$chr.hg19.rheMac3.net.axt
 		python Code/Map_rheMac3Ref2hg19.py chr$chr.hg19.rheMac3.net.axt $chr $start $end ALI_rheMac3Ref_hg19.fa
 	fi
