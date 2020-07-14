@@ -36,7 +36,6 @@ echo $specieslist
 
 
 mkdir $conf_dir_output
-cd $conf_dir_output
 
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
@@ -44,15 +43,15 @@ cd $conf_dir_output
 [[ ! -f chr$chr.fa.gz ]] &&  wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr$chr.fa.gz
 [[ ! -f chr$chr.fa ]] && gunzip -c chr$chr.fa.gz > chr$chr.fa
 ref=REF_chr$chr.START$start.END$end.fa
-if [ ! -f $ref]; then
-    samtools faidx chr$chr.fa
-    samtools faidx chr$chr.fa chr$chr:$start-$end > REF_chr$chr.START$start.END$end.fa
-fi
 
+if [[ ! -f $ref ]]
+then
+  samtools faidx chr$chr.fa
+  samtools faidx chr$chr.fa chr$chr:$start-$end > REF_chr$chr.START$start.END$end.fa
+fi
 
 ## STEP 2
 ##Human Condition Met
-
 
 
 ##If array contains human 1000 Genomes
