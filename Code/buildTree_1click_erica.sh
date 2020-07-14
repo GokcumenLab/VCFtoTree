@@ -36,7 +36,7 @@ echo $specieslist
 
 
 mkdir $conf_dir_output
-
+cd $conf_dir_output
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
 # Check file exist
@@ -61,7 +61,7 @@ then
     tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
     vcffile=chr$chr.START$start.END$end.vcf
 
-    python Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
+    python ../Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
     wait
     echo "vcftofasta has run."
 fi
@@ -77,17 +77,17 @@ then
     if [ $fastTree -eq 1 ]
     then
         gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o FastTree FastTree.c -lm
-        chmod +x Code/FastTree
-        Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
+        chmod +x ../Code/FastTree
+        ../Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
         wait
     fi
 
     if [ $raxML -eq 1 ]
     then
         ## If use RAxML
-        python Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
-        chmod +x Code/raxmlHPC-PTHREADS-SSE3
-        Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+        python ../Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
+        chmod +x ../Code/raxmlHPC-PTHREADS-SSE3
+        ../Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
         wait
         mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
         wait
@@ -134,9 +134,8 @@ else
 
         customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
 
-        python Code/
         ## building the alignment
-        python Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
+        python ../Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
         wait
         echo "vcftofasta for customized human has run."
     fi
@@ -152,7 +151,7 @@ else
 
 		vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
 
-		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
+		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
 	fi
 
     ##If Vindija neanderthal in array
@@ -167,7 +166,7 @@ else
 
         vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
 
-        python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
+        python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
     fi
 
 
@@ -179,7 +178,7 @@ else
 
 		vcffile_den=Den_chr$chr.START$start.END$end.vcf
 
-		python Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
+		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
 	fi
 
     ##If chimp in array
@@ -188,7 +187,7 @@ else
 		# getting Chimpanzee(panTro4) reference, mapped to hg19
 		wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsPanTro4/axtNet/chr$chr.hg19.panTro4.net.axt.gz
 		gunzip -c chr$chr.hg19.panTro4.net.axt.gz > chr$chr.hg19.panTro4.net.axt
-		python Code/Map_panTro4Ref2hg19.py chr$chr.hg19.panTro4.net.axt $chr $start $end ALI_panTro4Ref_hg19.fa
+		python ../Code/Map_panTro4Ref2hg19.py chr$chr.hg19.panTro4.net.axt $chr $start $end ALI_panTro4Ref_hg19.fa
 	fi
 
     ##If RM in array
@@ -197,7 +196,7 @@ else
 		# getting Rhesus(RheMac3) reference, mapped to hg19
 		wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/vsRheMac3/axtNet/chr$chr.hg19.rheMac3.net.axt.gz
 		gunzip -c chr$chr.hg19.rheMac3.net.axt.gz > chr$chr.hg19.rheMac3.net.axt
-		python Code/Map_rheMac3Ref2hg19.py chr$chr.hg19.rheMac3.net.axt $chr $start $end ALI_rheMac3Ref_hg19.fa
+		python ../Code/Map_rheMac3Ref2hg19.py chr$chr.hg19.rheMac3.net.axt $chr $start $end ALI_rheMac3Ref_hg19.fa
 	fi
 
 
@@ -209,7 +208,7 @@ else
 	#rm ALI_den.fa
 	#rm ALI_panTro4Ref_hg19.fa
 	#rm ALI_rheMac3Ref_hg19.fa
-	python Code/add_gap.py ALI_temp.fa log.txt $start $end ALI_othergenomes_wgap.fa
+	python ../Code/add_gap.py ALI_temp.fa log.txt $start $end ALI_othergenomes_wgap.fa
 
 	cat ALI_othergenomes_wgap.fa ALI_1000HG.fa >> ALI_final.fa
 	rm ALI_temp.fa
@@ -219,9 +218,9 @@ else
     ## If the user need to compile it:
     if [ $fastTree -eq 1 ]
     then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o Code/FastTree Code/FastTree.c -lm
-        chmod +x Code/FastTree
-        Code/FastTree -gtr -gamma -nt ALI_final.fa > FastTree_ALI_final.newick &
+        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o ../Code/FastTree ../Code/FastTree.c -lm
+        chmod +x ../Code/FastTree
+        ../Code/FastTree -gtr -gamma -nt ALI_final.fa > FastTree_ALI_final.newick &
         wait
     fi
 
@@ -229,9 +228,9 @@ else
     then
         ## If use RAxML
         rm ALI_final.phy
-        python Code/fas2phy.py ALI_final.fa ALI_final.phy
-        chmod +x Code/raxmlHPC-PTHREADS-SSE3
-        Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+        python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
+        chmod +x ../Code/raxmlHPC-PTHREADS-SSE3
+        ../Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
         wait
         mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
         wait
