@@ -95,19 +95,6 @@ then
     wait
 fi
 
-## finishing up:
-#shopt -s extglob
-#mv !(VCFtoTree.py|README.md|Code) ../../../VCFtoTree_Output/
-
-mkdir ../temp
-mv Code ../temp
-mv vcftotree_gui_final.py ../temp
-mv README.md ../temp
-
-mv * ../../../VCFtoTree_Output/
-
-mv ../temp/* .
-rmdir ../temp
 open ../../../VCFtoTree_Output/
 
-echo "All done, Erica is a genius."
+echo "All done"
