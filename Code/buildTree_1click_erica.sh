@@ -48,6 +48,8 @@ if [[ ! -f $ref ]]
 then
   samtools faidx chr$chr.fa
   samtools faidx chr$chr.fa chr$chr:$start-$end > REF_chr$chr.START$start.END$end.fa
+else
+  echo $ref " file exists no need to reindex, you can delete this file if you want to run indexing again"
 fi
 
 ## STEP 2
@@ -68,7 +70,7 @@ fi
 
 
 ##If array only contains human
-if [ $specieslist -eq 'Human-1000Genomes' ]
+if [[ $specieslist -eq 'Human-1000Genomes' ]]
 then
 	## Tree building
 
@@ -92,18 +94,6 @@ then
         mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
         wait
     fi
-
-	#shopt -s extglob
-	#shopt -p extglob
-	mkdir ../temp
-	mv Code ../temp
-	mv vcftotree_gui_final.py ../temp
-	mv README.md ../temp
-
-	mv * $conf_dir_output/
-
-	mv ../temp/* .
-	rmdir ../temp
 
 	open $conf_dir_output/
 
@@ -237,20 +227,8 @@ else
     fi
 
 
-	#shopt -s extglob
-	#shopt -p extglob
-
-	mkdir ../temp
-	mv Code ../temp
-	mv vcftotree_gui_final.py ../temp
-	mv README.md ../temp
-
-	mv * $conf_dir_output/
-
-	mv ../temp/* .
-	rmdir ../temp
 	open $conf_dir_output/
 
-	echo "All done, Erica is a genius."
+	echo "All done!"
 
 fi
