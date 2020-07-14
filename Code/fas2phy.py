@@ -2,10 +2,10 @@ import sys
 import re
 import string
 import time
-
+import os
 
 if len(sys.argv) != 3:
-    print "Usage: python fas2phy.py [input fasta] [output phylip]" 
+    print ("Usage: python fas2phy.py [input fasta] [output phylip]")
     sys.exit (1)
 
 startTime = time.time()
@@ -29,7 +29,7 @@ output.write(str(num_seq))
 for n in range(0,num_seq):
     if n == 0:
         length_seq = len(lines[1])
-        output.write(' '+str(length_seq)+'\n')   
+        output.write(' '+str(length_seq)+'\n')
     name_line = lines[2*n]
     seq_line = lines[2*n+1]
     if name_line.startswith('>'):
@@ -46,5 +46,5 @@ output.close()
 endTime = time.time()
 workTime =  endTime - startTime
 
-print 'fas2phy.py took',str(workTime),'s'
-print 'Erica is a genius!'
+print ('fas2phy.py took',str(workTime),'s')
+print('Script Completed ' + os.path.basename(__file__))
