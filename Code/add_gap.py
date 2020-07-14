@@ -5,9 +5,12 @@ import re
 import string
 import time
 import datetime
+import os
 
 if len(sys.argv) != 6:
-    print "Usage: python add_gap.py ALI_temp.fa error.txt [#start] [#end] ALI_othergenomes_wgap.fa"
+    print(
+        "Usage: python add_gap.py ALI_temp.fa error.txt [#start] [#end] ALI_othergenomes_wgap.fa"
+    )
     sys.exit(1)
 
 startTime = time.time()
@@ -28,7 +31,7 @@ for line in errors:
         loc = int(fields[1])
         if '-' in ref:
             indels.append([loc, ref, alt])
-            #print [loc, ref, alt]
+            #print ([loc, ref, alt] )
 
 for sequence in input:
     sequence = sequence.strip()
@@ -36,21 +39,22 @@ for sequence in input:
         output.write(sequence + '\n')
         continue
     seq_len = len(sequence)
-    # print seq_len
+    # print (seq_len)
     seq_dic = {}
     for n in range(start, end + 1):
         seq_dic[n] = sequence[n - start]
-
 
     for indel in indels:
         order = indel[0]
         gap_cnt = indel[1].count('-')
         bp_cnt = len(indel[1]) - gap_cnt
         try:
-            seq_dic[int(order)+bp_cnt-1] = seq_dic[int(order)+bp_cnt-1] + '-'*gap_cnt
+            seq_dic[int(order) + bp_cnt -
+                    1] = seq_dic[int(order) + bp_cnt - 1] + '-' * gap_cnt
         except KeyError:
-            seq_dic[int(order)+bp_cnt-1] = ''
-            seq_dic[int(order) + bp_cnt - 1] = seq_dic[int(order) + bp_cnt - 1] + '-' * gap_cnt
+            seq_dic[int(order) + bp_cnt - 1] = ''
+            seq_dic[int(order) + bp_cnt -
+                    1] = seq_dic[int(order) + bp_cnt - 1] + '-' * gap_cnt
 
     for base in sorted(seq_dic):
         output.write(seq_dic[base])
@@ -62,5 +66,5 @@ output.close()
 endTime = time.time()
 workTime = endTime - startTime
 
-print 'Time used: {}'.format(str(datetime.timedelta(seconds=workTime)))
-print 'Erica is a genius!'
+print('Time used: {}'.format(str(datetime.timedelta(seconds=workTime))))
+print('Script Completed ' + os.path.basename(__file__))
