@@ -97,7 +97,7 @@ then
     then
         ## If use RAxML
         python ../Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
-        raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+        raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
         wait
         mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
         wait
@@ -227,8 +227,7 @@ else
         ## If use RAxML
         rm ALI_final.phy
         python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
-        chmod +x ../Code/raxmlHPC-PTHREADS-SSE3
-        ../Code/raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+        raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
         wait
         mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
         wait

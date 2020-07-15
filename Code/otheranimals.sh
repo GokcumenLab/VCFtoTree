@@ -88,7 +88,7 @@ if [ $raxML -eq 1 ]
 then
     ## If use RAxML
     python Code/fas2phy.py ALI_otherAnimals.fa ALI_otherAnimals.phy
-    raxmlHPC-PTHREADS-SSE3 -T 2 -n YourRegion -s ALI_otherAnimals.phy -mGTRGAMMA -p 235 -N 2 &
+    raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_otherAnimals.phy -mGTRGAMMA -p 235 -N 2 &
     wait
     mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
     wait
