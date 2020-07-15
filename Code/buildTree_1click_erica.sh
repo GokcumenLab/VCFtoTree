@@ -30,16 +30,18 @@ fastTree=$9
 . vtt.config
 
 
-echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s). Have fun!"
-echo $populationlist
-echo $specieslist
+
 
 
 mkdir $conf_dir_output
 cd $conf_dir_output
+
 echo "==================================="
 echo "Working directory " $conf_dir_output
 echo "The script does not download already downloaded files"
+echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s). Have fun!"
+echo $populationlist
+echo $specieslist
 echo "==================================="
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
