@@ -37,11 +37,20 @@ echo $specieslist
 
 mkdir $conf_dir_output
 cd $conf_dir_output
+
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
-# Check file exist
-[[ ! -f chr$chr.fa.gz ]] &&  wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr$chr.fa.gz
+# Check if file exist
+if [[ ! -f chr$chr.fa.gz ]]
+then
+   wget http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr$chr.fa.gz
+else
+  echo " file exists no need to download chr$chr.fa.gz again, you can delete this file if you want to redownload it again"
+fi
+
 [[ ! -f chr$chr.fa ]] && gunzip -c chr$chr.fa.gz > chr$chr.fa
+
+
 ref=REF_chr$chr.START$start.END$end.fa
 
 if [[ ! -f $ref ]]
@@ -70,7 +79,7 @@ fi
 
 
 ##If array only contains human
-if [[ $specieslist -eq 'Human-1000Genomes' ]]
+if [[ $specieslist = 'Human-1000Genomes' ]]
 then
 	## Tree building
 
@@ -97,7 +106,7 @@ then
 
 	open $conf_dir_output/
 
-##Else if other species selected
+## Else if other species selected
 else
 	touch ALI_altainean.fa
 	touch ALI_vindijanean.fa
