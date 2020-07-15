@@ -30,18 +30,15 @@ fastTree=$9
 . vtt.config
 
 
-
-
-
 mkdir $conf_dir_output
 cd $conf_dir_output
 
 echo "==================================="
-echo "Working directory " $conf_dir_output
+echo "Working directory: " $conf_dir_output
 echo "The script does not download already downloaded files"
-echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s). Have fun!"
-echo $populationlist
-echo $specieslist
+echo "The region of your interest: chr"$chr":"$start"-"$end" for 1000 Genomes "$populationlist" population(s)"
+echo "Population List: " $populationlist
+echo "Species List: " $specieslist
 echo "==================================="
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
@@ -74,8 +71,13 @@ fi
 ## prepare 1000 genome vcf file
 if [[ $specieslist == *'Human-1000Genomes'* ]]
 then
-    tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > chr$chr.START$start.END$end.vcf
     vcffile=chr$chr.START$start.END$end.vcf
+    if [[ ! -f $vcffile ]]
+    then
+       tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > $vcffile
+    else
+      echo " file exists $vcffile no need to run tabix, you can delete this file if you want to run tabix again"
+    fi
 
     python ../Code/vcf2fasta_erica.py $vcffile $ref $start $end $populationlist ALI_1000HG.fa log.txt &
     wait
