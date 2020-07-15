@@ -5,8 +5,8 @@ import time
 import os
 
 if len(sys.argv) != 3:
-    print ("Usage: python fas2phy.py [input fasta] [output phylip]")
-    sys.exit (1)
+    print("Usage: python fas2phy.py [input fasta] [output phylip]")
+    sys.exit(1)
 
 startTime = time.time()
 
@@ -23,28 +23,28 @@ for line in input:
     if line != '':
         lines.append(line)
 
-num_seq = len(lines)/2
+num_seq = len(lines) // 2
 output.write(str(num_seq))
 
-for n in range(0,num_seq):
+for n in range(0, num_seq):
     if n == 0:
         length_seq = len(lines[1])
-        output.write(' '+str(length_seq)+'\n')
-    name_line = lines[2*n]
-    seq_line = lines[2*n+1]
+        output.write(' ' + str(length_seq) + '\n')
+    name_line = lines[2 * n]
+    seq_line = lines[2 * n + 1]
     if name_line.startswith('>'):
         if len(name_line[1:]) >= 10:
             new_name = name_line[1:10]
-            output.write(new_name+' '+seq_line+'\n')
+            output.write(new_name + ' ' + seq_line + '\n')
         else:
             name_length = len(name_line[1:])
-            delta = 10-name_length
-            output.write(name_line[1:]+' '*delta+seq_line+'\n')
+            delta = 10 - name_length
+            output.write(name_line[1:] + ' ' * delta + seq_line + '\n')
 
 output.close()
 
 endTime = time.time()
-workTime =  endTime - startTime
+workTime = endTime - startTime
 
-print ('fas2phy.py took',str(workTime),'s')
+print('fas2phy.py took', str(workTime), 's')
 print('Script Completed ' + os.path.basename(__file__))
