@@ -37,7 +37,10 @@ echo $specieslist
 
 mkdir $conf_dir_output
 cd $conf_dir_output
-
+echo "==================================="
+echo "Working directory " $conf_dir_output
+echo "The script does not download already downloaded files"
+echo "==================================="
 ## STEP 1
 ## prepare reference sequence for your chosen chromosome
 # Check if file exist
