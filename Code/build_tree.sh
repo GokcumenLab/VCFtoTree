@@ -28,7 +28,21 @@ fastTree=$9
 
 # Load configuration files
 . vtt.config
+############################
+# Function Definitions
+############################
 
+# Run RaXML
+func_run_raxml(){
+  rm ALI_final.phy
+  python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
+  raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+  wait
+  mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
+  wait
+}
+
+############################
 
 mkdir $conf_dir_output
 cd $conf_dir_output
@@ -94,7 +108,7 @@ then
     ## If the user need to compile it:
     if [ $fastTree -eq 1 ]
     then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o FastTree FastTree.c -lm
+        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o   ../Code/FastTree   ../Code/FastTree.c -lm
         chmod +x ../Code/FastTree
         ../Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
         wait
@@ -102,12 +116,9 @@ then
 
     if [ $raxML -eq 1 ]
     then
-        ## If use RAxML
-        python ../Code/fas2phy.py ALI_1000HG.fa ALI_final.phy
-        raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
-        wait
-        mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
-        wait
+      ## If use RAxML
+      echo "**** calling func_run_raxml() ****"
+      func_run_raxml
     fi
 
 	open $conf_dir_output/
@@ -231,13 +242,9 @@ else
 
     if [ $raxML -eq 1 ]
     then
-        ## If use RAxML
-        rm ALI_final.phy
-        python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
-        raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
-        wait
-        mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
-        wait
+      ## If use RAxML
+      echo "**** calling func_run_raxml() ****"
+      func_run_raxml
     fi
 
 
