@@ -820,8 +820,8 @@ class Frames:
             #Normal Build Tree Function
             elif self.otherSpecies == 0:
 
-                os.system('chmod +x Code/buildTree_1click_erica.sh')
-                command = "Code/buildTree_1click_erica.sh %s %s %s %s %s %s %s %s %s &" % (
+                os.system('chmod +x Code/build_tree.sh')
+                command = "Code/build_tree.sh %s %s %s %s %s %s %s %s %s &" % (
                     str(self.chromosomeOutputs[0]),
                     str(self.chromosomeOutputs[1]),
                     str(self.chromosomeOutputs[2]), self.speciesList2,

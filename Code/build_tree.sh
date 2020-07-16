@@ -2,7 +2,7 @@
 ## using the vcf files and the human refernce genome
 ## obtain the alignment for the any region for individuals from 1000 genomes phase 3.
 
-## Usage: ./buildTree_1click_erica.sh #1:chr #2:start #3:end #4:specieslist #5:vcfaddress #6:numberofSpecies #7:populationlist #8:raxML #9:fastTree
+## Usage: ./build_tree.sh #1:chr #2:start #3:end #4:specieslist #5:vcfaddress #6:numberofSpecies #7:populationlist #8:raxML #9:fastTree
 
 ## change this to your chromosome number
 chr=$1
