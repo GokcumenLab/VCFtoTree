@@ -74,6 +74,8 @@ func_run_fasttree(){
   chmod +x $bin_fast_tree
 
   ../Code/FastTree -gtr -gamma -nt $input_file > $output_file
+
+  echo "../Code/FastTree -gtr -gamma -nt $input_file > $output_file"
   echo "func_run_fasttree() end"
   echo "-------------------------"
 }
