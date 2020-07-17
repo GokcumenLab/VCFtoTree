@@ -63,7 +63,7 @@ func_run_fasttree(){
   echo "func_run_fasttree() start"
 
   input_file=$1
-  output_file=$1
+  output_file=$2
 
   func_build_fasttree
   chmod +x $bin_fast_tree
