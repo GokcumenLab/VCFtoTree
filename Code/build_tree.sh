@@ -28,6 +28,8 @@ fastTree=$9
 
 # Load configuration files
 . vtt.config
+# Global vars
+bin_fast_tree=../Code/FastTree
 ############################
 # Function Definitions
 ############################
@@ -40,6 +42,27 @@ func_run_raxml(){
   wait
   mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
   wait
+}
+
+# Builds fasttree source code
+func_build_fasttree(){
+  if [[ ! -f $bin_fast_tree ]]
+  then
+    gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o ../Code/FastTree ../Code/FastTree.c -lm
+  else
+    echo $bin_fast_tree " file available no need to compile"
+  fi
+}
+
+# Runs fasttree
+func_run_fasttree(){
+  input_file=$1
+  output_file=$1
+
+  func_build_fasttree
+  chmod +x $bin_fast_tree
+
+  ../Code/FastTree -gtr -gamma -nt $input_file > $output_file
 }
 
 ############################
@@ -102,24 +125,19 @@ fi
 ##If array only contains human
 if [[ $specieslist = 'Human-1000Genomes' ]]
 then
-	## Tree building
-
+	 ## Tree building
+  if [ $fastTree -eq 1 ]
+  then
     ## If use FastTree
-    ## If the user need to compile it:
-    if [ $fastTree -eq 1 ]
-    then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o   ../Code/FastTree   ../Code/FastTree.c -lm
-        chmod +x ../Code/FastTree
-        ../Code/FastTree -gtr -gamma -nt ALI_1000HG.fa > FastTree_ALI_1000HG.newick &
-        wait
-    fi
+    func_run_fasttree ALI_1000HG.fa FastTree_ALI_1000HG.newick
+  fi
 
-    if [ $raxML -eq 1 ]
-    then
-      ## If use RAxML
-      echo "**** calling func_run_raxml() ****"
-      func_run_raxml
-    fi
+  if [ $raxML -eq 1 ]
+  then
+    ## If use RAxML
+    echo "**** calling func_run_raxml() ****"
+    func_run_raxml
+  fi
 
 	open $conf_dir_output/
 
@@ -177,7 +195,7 @@ else
 	## not gonna work until published.
         ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
         touch chr$chr\_mq25_mapab100.vcf.gz
-	tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
+	      tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
         tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
         vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
@@ -230,14 +248,10 @@ else
 	rm ALI_temp.fa
 
 
-    ## If use FastTree
-    ## If the user need to compile it:
     if [ $fastTree -eq 1 ]
     then
-        gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o ../Code/FastTree ../Code/FastTree.c -lm
-        chmod +x ../Code/FastTree
-        ../Code/FastTree -gtr -gamma -nt ALI_final.fa > FastTree_ALI_final.newick &
-        wait
+      ## If use FastTree
+      func_run_fasttree ALI_final.fa FastTree_ALI_final.newick
     fi
 
     if [ $raxML -eq 1 ]
