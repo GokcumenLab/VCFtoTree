@@ -144,7 +144,7 @@ then
   if [ $fastTree -eq 1 ]
   then
     ## If use FastTree
-    func_run_fasttree ALI_1000HG.fa FastTree_ALI_1000HG.newick
+    func_run_fasttree $conf_dir_output/ALI_1000HG.fa $conf_dir_output/FastTree_ALI_1000HG.newick
   fi
 
   if [ $raxML -eq 1 ]
@@ -266,7 +266,7 @@ else
     if [ $fastTree -eq 1 ]
     then
       ## If use FastTree
-      func_run_fasttree ALI_final.fa FastTree_ALI_final.newick
+      func_run_fasttree $conf_dir_output/ALI_final.fa $conf_dir_output/FastTree_ALI_final.newick
     fi
 
     if [ $raxML -eq 1 ]
