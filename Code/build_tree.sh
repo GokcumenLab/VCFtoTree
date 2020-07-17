@@ -36,26 +36,32 @@ bin_fast_tree=../Code/FastTree
 
 # Run RaXML
 func_run_raxml(){
+  echo "func_run_raxml() start"
   rm ALI_final.phy
   python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
   raxmlHPC-PTHREADS -T $ra_xml_threads -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
   wait
   mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
   wait
+  echo "func_run_raxml() end"
 }
 
 # Builds fasttree source code
 func_build_fasttree(){
+  echo "func_build_fasttree() start"
   if [[ ! -f $bin_fast_tree ]]
   then
     gcc -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall -o ../Code/FastTree ../Code/FastTree.c -lm
   else
     echo $bin_fast_tree " file available no need to compile"
   fi
+  echo "func_build_fasttree() end"
 }
 
 # Runs fasttree
 func_run_fasttree(){
+  echo "func_run_fasttree() start"
+
   input_file=$1
   output_file=$1
 
@@ -63,6 +69,7 @@ func_run_fasttree(){
   chmod +x $bin_fast_tree
 
   ../Code/FastTree -gtr -gamma -nt $input_file > $output_file
+  echo "func_run_fasttree() end"
 }
 
 ############################
