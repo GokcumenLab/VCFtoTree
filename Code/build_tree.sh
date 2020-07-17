@@ -38,7 +38,7 @@ bin_fast_tree=../Code/FastTree
 func_run_raxml(){
   rm ALI_final.phy
   python ../Code/fas2phy.py ALI_final.fa ALI_final.phy
-  raxmlHPC-PTHREADS -T 2 -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
+  raxmlHPC-PTHREADS -T $ra_xml_threads -n YourRegion -s ALI_final.phy -mGTRGAMMA -p 235 -N 2 &
   wait
   mv RAxML_bestTree.YourRegion RAxML_bestTree.YourRegion.newick &
   wait
