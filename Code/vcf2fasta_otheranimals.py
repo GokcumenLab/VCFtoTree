@@ -191,7 +191,7 @@ for l in input_temp:
                         error.write(l + '\n')
                     else:
                         print alter0
-                        print "Please go to find Erica..."
+                        print "Error"
 
             elif vt == 'VT=INDEL':
                 if not any(',' in gt0[4] for c0 in gt0[4]):
@@ -243,7 +243,7 @@ for l in input_temp:
                 input2.append(l)
             else:
                 print vt
-                print "Please go to find Erica..."
+                print "Error"
 error.close()
 
 n = 1
@@ -365,7 +365,7 @@ endTime = time.time()
 workTime = endTime - startTime
 
 print 'Time used: {}'.format(str(datetime.timedelta(seconds=workTime)))
-print 'vcf2fasta_otheranimal.py finished, and Erica is a genius!'
+print('Script Completed ' + os.path.basename(__file__))
 
 output.close()
 error.close()

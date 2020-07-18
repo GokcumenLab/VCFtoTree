@@ -273,11 +273,7 @@ else
       echo "**** calling func_run_raxml() ****"
       func_run_raxml
     fi
-
-
-	open $conf_dir_output/
-
-	echo "All done!"
-  echo "Check the working directory for outputs: " $conf_dir_output
-
 fi
+
+echo "All done!"
+echo "Check the working directory for outputs: " $conf_dir_output
