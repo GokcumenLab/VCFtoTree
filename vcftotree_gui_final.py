@@ -828,6 +828,10 @@ class Frames:
                     str(self.customOutputs[1]), str(self.customOutputs[2]),
                     self.populationList2, str(self.customOutputs[3]),
                     str(self.customOutputs[4]))
+                print("Command ")
+                print("---------- ")
+                print(command)
+                print("---------- ")
                 os.system(command)
 
                 return
