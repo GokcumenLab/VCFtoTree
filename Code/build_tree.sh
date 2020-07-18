@@ -154,8 +154,6 @@ then
     func_run_raxml
   fi
 
-	open $conf_dir_output/
-
 ## Else if other species selected
 else
 	touch ALI_altainean.fa
@@ -280,5 +278,6 @@ else
 	open $conf_dir_output/
 
 	echo "All done!"
+  echo "Check the working directory for outputs: " $conf_dir_output
 
 fi
