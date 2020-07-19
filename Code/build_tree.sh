@@ -227,7 +227,7 @@ else
   if [[ $specieslist == *"Vindija"* ]]
   then
       ## prepare Vindija vcf file
-## not gonna work until published.
+      ## not gonna work until published.
       ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
       touch chr$chr\_mq25_mapab100.vcf.gz
       tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
@@ -242,10 +242,15 @@ else
     ##If denisova in array
 	if [[ $specieslist == *"Denisova"* ]]
 	then
-		## prepare Denisovan vcf files
-		tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
+    vcffile_den=Den_chr$chr.START$start.END$end.vcf
 
-		vcffile_den=Den_chr$chr.START$start.END$end.vcf
+    if [[ ! -f $vcffile_den ]]
+    then
+  		## prepare Denisovan vcf files
+  		tabix -h -f http://cdna.eva.mpg.de/neandertal/altai/Denisovan/DenisovaPinky.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Den_chr$chr.START$start.END$end.vcf
+    else
+      echo " file exists $vcffile_den no need to run tabix, you can delete this file if you want to run tabix again"
+    fi
 
 		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_den $ref $start $end ALI_den.fa Indels_Denisova.txt
 	fi
