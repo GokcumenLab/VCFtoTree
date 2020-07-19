@@ -3,6 +3,9 @@
 ## obtain the alignment for the any region for individuals from 1000 genomes phase 3.
 
 ## Usage: ./build_tree.sh #1:chr #2:start #3:end #4:specieslist #5:vcfaddress #6:numberofSpecies #7:populationlist #8:raxML #9:fastTree
+############################
+# Parameters
+############################
 
 ## change this to your chromosome number
 chr=$1
@@ -25,7 +28,7 @@ populationlist=$7
 raxML=$8
 ## Do you want to build the tree using fastTree?
 fastTree=$9
-
+############################
 # Load configuration files
 . vtt.config
 # Global vars
@@ -164,28 +167,28 @@ else
 	touch ALI_customized_human.fa
 
 
-    ##If array contains human-customized
-    if [[ $specieslist == *'Human-Custom'* ]]
+  ##If array contains human-customized
+  if [[ $specieslist == *'Human-Custom'* ]]
+  then
+    if [[ $vcfaddress == *"http://"* ]]
     then
-        if [[ $vcfaddress == *"http://"* ]]
-        then
-            wget $vcfaddress
-            filenameVcfGz=$(basename "$vcfaddress")
-            mv $filenameVcfGz customized_human_chr$chr.vcf.gz
-        else
-            mv $vcfaddress customized_human_chr$chr.vcf.gz
-        fi
-
-        tabix -h -f customized_human_chr$chr.vcf.gz
-        tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
-
-        customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
-
-        ## building the alignment
-        python ../Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
-        wait
-        echo "vcftofasta for customized human has run."
+        wget $vcfaddress
+        filenameVcfGz=$(basename "$vcfaddress")
+        mv $filenameVcfGz customized_human_chr$chr.vcf.gz
+    else
+        mv $vcfaddress customized_human_chr$chr.vcf.gz
     fi
+
+    tabix -h -f customized_human_chr$chr.vcf.gz
+    tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
+
+    customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
+
+    ## building the alignment
+    python ../Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
+    wait
+    echo "vcftofasta for customized human has run."
+  fi
 
 
     ##If neadertal in array
@@ -201,20 +204,20 @@ else
 		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
 	fi
 
-    ##If Vindija neanderthal in array
-    if [[ $specieslist == *"Vindija"* ]]
-    then
-        ## prepare Vindija vcf file
-	## not gonna work until published.
-        ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
-        touch chr$chr\_mq25_mapab100.vcf.gz
-	      tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
-        tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
+  ##If Vindija neanderthal in array
+  if [[ $specieslist == *"Vindija"* ]]
+  then
+      ## prepare Vindija vcf file
+## not gonna work until published.
+      ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
+      touch chr$chr\_mq25_mapab100.vcf.gz
+      tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
+      tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
-        vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
+      vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
 
-        python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
-    fi
+      python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
+  fi
 
 
     ##If denisova in array
@@ -261,18 +264,18 @@ else
 	rm ALI_temp.fa
 
 
-    if [ $fastTree -eq 1 ]
-    then
-      ## If use FastTree
-      func_run_fasttree $conf_dir_output/ALI_final.fa $conf_dir_output/FastTree_ALI_final.newick
-    fi
+  if [ $fastTree -eq 1 ]
+  then
+    ## If use FastTree
+    func_run_fasttree $conf_dir_output/ALI_final.fa $conf_dir_output/FastTree_ALI_final.newick
+  fi
 
-    if [ $raxML -eq 1 ]
-    then
-      ## If use RAxML
-      echo "**** calling func_run_raxml() ****"
-      func_run_raxml
-    fi
+  if [ $raxML -eq 1 ]
+  then
+    ## If use RAxML
+    echo "**** calling func_run_raxml() ****"
+    func_run_raxml
+  fi
 fi
 
 echo "All done!"
