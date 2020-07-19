@@ -172,17 +172,26 @@ else
   then
     if [[ $vcfaddress == *"http://"* ]]
     then
-        wget $vcfaddress
         filenameVcfGz=$(basename "$vcfaddress")
-        mv $filenameVcfGz customized_human_chr$chr.vcf.gz
+        if [[ ! -f customized_human_chr$chr.vcf.gz ]]
+        then
+          wget $vcfaddress
+          mv $filenameVcfGz customized_human_chr$chr.vcf.gz
+        else
+          echo " file exists no need to download customized_human_chr$chr.vcf.gz again, you can delete this file if you want to redownload it again"
+        fi
     else
         mv $vcfaddress customized_human_chr$chr.vcf.gz
     fi
 
-    tabix -h -f customized_human_chr$chr.vcf.gz
-    tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > customized_human_chr$chr.START$start.END$end.vcf
-
     customizedHuman=customized_human_chr$chr.START$start.END$end.vcf
+    if [[ ! -f $customizedHuman ]]
+    then
+      tabix -h -f customized_human_chr$chr.vcf.gz
+      tabix -h -f customized_human_chr$chr.vcf.gz $chr:$start-$end > $customizedHuman
+    else
+      echo " file exists $customizedHuman no need to run tabix, you can delete this file if you want to run tabix again"
+    fi
 
     ## building the alignment
     python ../Code/vcf2fasta_otheranimals.py $customizedHuman $ref $start $end $num ALI_customized_human.fa log.txt &
