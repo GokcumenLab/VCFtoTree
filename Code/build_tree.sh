@@ -204,11 +204,21 @@ else
 	if [[ $specieslist == *"Neanderthal"* ]]
 	then
 		## prepare Altai neanderthal vcf files
-		wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
-		tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
+    if [[ ! -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz ]]
+    then
+      wget http://cdna.eva.mpg.de/neandertal/altai/AltaiNeandertal/VCF/AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+    else
+      echo " file exists no need to download AltaiNea.hg19_1000g.$chr.mod.vcf.gz again, you can delete this file if you want to redownload it again"
+    fi
 
-		vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
+    vcffile_altainean=Altainean_chr$chr.START$start.END$end.vcf
+    if [[ ! -f $vcffile_altainean ]]
+    then
+      tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz
+  		tabix -h -f AltaiNea.hg19_1000g.$chr.mod.vcf.gz $chr:$start-$end > Altainean_chr$chr.START$start.END$end.vcf
+    else
+      echo " file exists $vcffile_altainean no need to run tabix, you can delete this file if you want to run tabix again"
+    fi
 
 		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
 	fi
