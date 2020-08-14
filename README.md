@@ -1,5 +1,6 @@
-# VCFtoTree 
+# VCFtoTree
 
+VCFtoTree takes user input from genomic regions in VCF format, aligns these regions, and outputs a newick phylogeny file. VCFtoTree manages both human and non-human data.
 
 # Requirements
 
