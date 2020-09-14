@@ -223,20 +223,30 @@ else
 		python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_altainean $ref $start $end ALI_altainean.fa Indels_Altai.txt
 	fi
 
-  ##If Vindija neanderthal in array
-  if [[ $specieslist == *"Vindija"* ]]
-  then
-      ## prepare Vindija vcf file
-      ## not gonna work until published.
-      ##DO NOT USE!!!##wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
-      touch chr$chr\_mq25_mapab100.vcf.gz
+	##If Vindija neanderthal in array
+	if [[ $specieslist == *"Vindija"* ]]
+	then
+        ## prepare Vindija vcf file
+        ##touch chr$chr\_mq25_mapab100.vcf.gz
+	if [[ ! -f chr$chr\_mq25_mapab100.vcf.gz ]]
+	then
+      wget http://cdna.eva.mpg.de/neandertal/Vindija/VCF/Vindija33.19/chr$chr\_mq25_mapab100.vcf.gz
+	else
+      echo " file exists no need to download chr$chr\_mq25_mapab100.vcf.gz again, you can delete this file if you want to redownload it again"
+	fi
+    
+    vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
+    if [[ ! -f $vcffile_vindijanean ]]
+    then
       tabix -h -f chr$chr\_mq25_mapab100.vcf.gz
-      tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
+      	tabix -h -f chr$chr\_mq25_mapab100.vcf.gz $chr:$start-$end >  Vindijanean_chr$chr.START$start.END$end.vcf
 
-      vcffile_vindijanean=Vindijanean_chr$chr.START$start.END$end.vcf
-
-      python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
-  fi
+	else
+      echo " file exists $vcffile_vindijanean no need to run tabix, you can delete this file if you want to run tabix again"
+    fi
+      
+      	python ../Code/vcf2fasta_AltaiNean_Den_rmhetero_erica.py $vcffile_vindijanean $ref $start $end ALI_vindijanean.fa Indels_Vindija.txt
+	fi
 
 
     ##If denisova in array
