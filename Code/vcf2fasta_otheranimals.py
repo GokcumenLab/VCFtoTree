@@ -22,7 +22,7 @@ import datetime
 startTime = time.time()
 
 if len(sys.argv) != 8:
-    print "Usage: python vcf2fasta_erica.py [inputvcf] [Reference sequence] [start] [end] [# of species] [output] [error]"
+    (print "Usage: python vcf2fasta_erica.py [inputvcf] [Reference sequence] [start] [end] [# of species] [output] [error]")
     sys.exit(1)
 
 input = open(sys.argv[1], 'r')
@@ -190,8 +190,8 @@ for l in input_temp:
                         input2.append(l)
                         error.write(l + '\n')
                     else:
-                        print alter0
-                        print "Error"
+                        print(alter0)
+                        print("Error")
 
             elif vt == 'VT=INDEL':
                 if not any(',' in gt0[4] for c0 in gt0[4]):
@@ -242,8 +242,8 @@ for l in input_temp:
             elif vt == 'VT=SNP':
                 input2.append(l)
             else:
-                print vt
-                print "Error"
+                print(vt)
+                print("Error")
 error.close()
 
 n = 1
@@ -297,7 +297,7 @@ while n <= numSpecies:  # phase3 2504, phase1 1092, num of species if using othe
                 gt1 = gt[4]
                 gt2 = gt[4]
             else:
-                print 'error'
+                print('error')
 
         # if len(gt1) <= len(dic_psn1[pos+'_1']):
         #    continue
@@ -338,10 +338,10 @@ while n <= numSpecies:  # phase3 2504, phase1 1092, num of species if using othe
             dic_psn2[pos] = gt2
 
             # if pos == '171117899' and n ==1:
-            #    print dic_psn1['171117907_1'], dic_psn2['171117907']
+            #    print(dic_psn1['171117907_1'], dic_psn2['171117907'])
 
             # if n == 1:
-            # print dic_psn1['171117907'+'_1'], dic_psn2['171117907']
+            # print(dic_psn1['171117907'+'_1'], dic_psn2['171117907'])
 
     haplotype1 = []
     haplotype2 = []
@@ -355,7 +355,7 @@ while n <= numSpecies:  # phase3 2504, phase1 1092, num of species if using othe
     all_haplo[id[n + 8] + '.2'] = ''.join(haplotype2)
     n += 1
 
-#print final_ind_set
+#print(final_ind_set)
 
 for j in sorted(all_haplo):  # another easier way to sorted a dictionary by key, only contain key
     output.write('>' + j + '\n')
@@ -364,7 +364,7 @@ for j in sorted(all_haplo):  # another easier way to sorted a dictionary by key,
 endTime = time.time()
 workTime = endTime - startTime
 
-print 'Time used: {}'.format(str(datetime.timedelta(seconds=workTime)))
+print('Time used: {}'.format(str(datetime.timedelta(seconds=workTime))))
 print('Script Completed ' + os.path.basename(__file__))
 
 output.close()

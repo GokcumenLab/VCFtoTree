@@ -31,7 +31,7 @@ for line in errors:
         loc = int(fields[1])
         if '-' in ref:
             indels.append([loc, ref, alt])
-            #print ([loc, ref, alt] )
+            #print([loc, ref, alt] )
 
 for sequence in input:
     sequence = sequence.strip()
@@ -39,7 +39,7 @@ for sequence in input:
         output.write(sequence + '\n')
         continue
     seq_len = len(sequence)
-    # print (seq_len)
+    # print(seq_len)
     seq_dic = {}
     for n in range(start, end + 1):
         seq_dic[n] = sequence[n - start]

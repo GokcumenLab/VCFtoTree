@@ -129,7 +129,7 @@ then
     vcffile=chr$chr.START$start.END$end.vcf
     if [[ ! -f $vcffile ]]
     then
-       tabix -h -f http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > $vcffile
+       tabix -h -f ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr$chr.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz $chr:$start-$end > $vcffile
     else
       echo " file exists $vcffile no need to run tabix, you can delete this file if you want to run tabix again"
     fi

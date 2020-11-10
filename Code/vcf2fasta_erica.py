@@ -62,7 +62,7 @@ while count <= (len(r) - 1):
 #    ref_bs[int(r)] = ref_bs[r]
 #    del ref_bs[r]
 # ref_bs = collections.OrderedDict(sorted(ref_bs.items()))  #sort reference sequence
-# print ref_bs
+# print(ref_bs)
 
 input_temp = []
 for line in input:
@@ -140,7 +140,7 @@ while input_cnt <= len(input_temp) - 1:
         input_temp[input_cnt - 1] = '\t'.join(gt_pre)
         input_temp.remove(input_temp[input_cnt])
     else:
-        # print input_cnt, len(input_temp)
+        # print (input_cnt, len(input_temp))
         input_cnt += 1
 
 input2 = []
@@ -261,7 +261,7 @@ error.close()
 
 n = 1
 while n <= 2504:  # phase3 2504, phase1 1092
-    # print n
+    # print(n)
     dic_psn1 = {}
     dic_psn2 = {}
     # dic_psn1 = ref_bs  # {}  # variation/sequence dictionary for each individual, initial value is same as ref_bs
@@ -279,7 +279,7 @@ while n <= 2504:  # phase3 2504, phase1 1092
                 gt1 = gt[3]
             elif gt[8 + n][0] == '1':
                 gt1 = alter[0]  # gt[4][0]
-                # print gt1
+                # print(gt1)
             elif gt[8 + n][0] == '2':
                 gt1 = alter[1]  # gt[4][2]
             elif gt[8 + n][0] == '3':
@@ -318,8 +318,8 @@ while n <= 2504:  # phase3 2504, phase1 1092
         # dic_psn1[pos] = gt1
         # dic_psn2[pos] = gt2
         # if n==1:
-        #    print pos
-        #    print dic_psn1['171117907_1']
+        #    print(pos)
+        #    print(dic_psn1['171117907_1'])
 
         # deal with len(reference allele) > 1
         if len(gt[3]) > 1:
@@ -334,7 +334,7 @@ while n <= 2504:  # phase3 2504, phase1 1092
             else:
                 gap_cnt = gt[3].count('-')
                 bp_cnt = len(gt[3]) - gap_cnt
-                # print gap_cnt, bp_cnt
+                # print(gap_cnt, bp_cnt)
                 for pos_key in range(int(pos), int(pos) + bp_cnt):
                     dic_psn1[str(pos_key) + '_1'] = gt1[pos_key - int(pos)]
                     dic_psn2[str(pos_key)] = gt2[pos_key - int(pos)]
@@ -351,10 +351,10 @@ while n <= 2504:  # phase3 2504, phase1 1092
             dic_psn2[pos] = gt2
 
             # if pos == '171117899' and n ==1:
-            #    print dic_psn1['171117907_1'], dic_psn2['171117907']
+            #    print(dic_psn1['171117907_1'], dic_psn2['171117907'])
 
             # if n == 1:
-            # print dic_psn1['171117907'+'_1'], dic_psn2['171117907']
+            # print(dic_psn1['171117907'+'_1'], dic_psn2['171117907'])
 
     haplotype1 = []
     haplotype2 = []
@@ -1036,13 +1036,13 @@ for each_pop in pops:
             for x_each_pop in pop_dic[each_pop.lower()]:
                 final_ind_set.append(x_each_pop)
 
-#print final_ind_set
+#print(final_ind_set)
 
 for j in sorted(
         all_haplo
 ):  # another easier way to sorted a dictionary by key, only contain key
     if j[:7] in final_ind_set:
-        #print j[:7]
+        #print(j[:7])
         output.write('>' + j + '\n')
         output.write(all_haplo[j] + '\n')
 

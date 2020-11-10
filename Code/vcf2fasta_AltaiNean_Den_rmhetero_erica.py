@@ -18,7 +18,7 @@ import string
 import collections   #for sorting the dic by key
 
 if len(sys.argv) != 7:
-    print "Usage: python vcf2fasta_AltaiNean_Den_erica.py [inputvcf] [Reference sequence] [start] [end] [output] [error]"
+    print("Usage: python3 vcf2fasta_AltaiNean_Den_erica.py [inputvcf] [Reference sequence] [start] [end] [output] [error]")
     sys.exit (1)
     
 input = open(sys.argv[1], 'r')
@@ -53,7 +53,7 @@ while count <= (len(r)-1):
 #    ref_bs[int(r)] = ref_bs[r]
 #    del ref_bs[r]
 #ref_bs = collections.OrderedDict(sorted(ref_bs.items()))  #sort reference sequence
-#print ref_bs
+#print(ref_bs)
 
 for l0 in input:
     l = l0.replace('\n','')
@@ -84,7 +84,7 @@ while n <= 1:    #phase3 2504, phase1 1092, n is the number of individuals, then
     dic_psn2 = ref_bs    #everyone has two dic for two haplotypes respectably
     for k1 in ref_bs.keys():    #.keys() would introduce a iteration
         dic_psn1[k1+'_1'] = ref_bs[k1]
-    #print dic_psn1
+    #print(dic_psn1)
     for line in input2:
         gt = []
         gt = line.split('\t')
@@ -124,7 +124,7 @@ while n <= 1:    #phase3 2504, phase1 1092, n is the number of individuals, then
                 gt1 = 'N'
                 gt2 = 'N'
             else:
-                print 'error'
+                print('error')
 
         dic_psn1[pos+'_1'] = gt1
         dic_psn2[pos] = gt2
@@ -156,21 +156,21 @@ while n <= 1:    #phase3 2504, phase1 1092, n is the number of individuals, then
     n = n + 1
 
 for j in sorted(all_haplo):     #another easier way to sorted a dictionary by key, only contain key
-    #print '>'+j
-    #print all_haplo[j]+'\n'
+    #print('>'+j)
+    #print(all_haplo[j]+'\n')
     output.write('>'+j+'\n')
     output.write(all_haplo[j]+'\n')
     break  # only output one, delete break will output .1 .2, they are the same though
 
 
 
-print '                .-._                               '
-print '               {_}^ )o                             '
-print '      {\________//~`     My mommy is a genius!     '
-print '       (         )                -- Cabernet      '
-print '       /||~~~~~||\                                 '
-print '      |_\\\\_    \\\_\\_                           '
-print '      \"\' \"\"\'    \"\"\'\"\'                    '
+print('                .-._                               ')
+print('               {_}^ )o                             ')
+print('      {\________//~`     My mommy is a genius!     ')
+print('       (         )                -- Cabernet      ')
+print('       /||~~~~~||\                                 ')
+print('      |_\\\\_    \\\_\\_                           ')
+print('      \"\' \"\"\'    \"\"\'\"\'                    ')
 
 
 output.close()
